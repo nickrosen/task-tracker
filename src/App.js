@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header";
 import Tasks from "./components/Tasks";
 import AddTask from "./components/AddTask";
 import Footer from "./components/Footer";
 import About from "./components/About";
+import TaskDetails from "./components/TaskDetails";
 // React import not needed for functional components
 function App() {
   const [showAddTask, setShowAddTask] = useState(false);
@@ -79,25 +80,27 @@ function App() {
           showAdd={showAddTask}
         />
 
-        <Route
-          path="/"
-          exact
-          render={(props) => (
-            <>
-              {showAddTask && <AddTask onAdd={addTask} />}
-              {tasks.length ? (
-                <Tasks
-                  tasks={tasks}
-                  onDelete={deleteTask}
-                  onToggle={toggleReminder}
-                />
-              ) : (
-                "No tasks"
-              )}{" "}
-            </>
-          )}
-        />
-        <Route path="/about" component={About} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                {showAddTask && <AddTask onAdd={addTask} />}
+                {tasks.length ? (
+                  <Tasks
+                    tasks={tasks}
+                    onDelete={deleteTask}
+                    onToggle={toggleReminder}
+                  />
+                ) : (
+                  "No tasks"
+                )}{" "}
+              </>
+            }
+          />
+          <Route path="/about" element={<About />} />
+          <Route path="/task/:id" element={<TaskDetails />} />
+        </Routes>
         <Footer />
       </div>
     </Router>
